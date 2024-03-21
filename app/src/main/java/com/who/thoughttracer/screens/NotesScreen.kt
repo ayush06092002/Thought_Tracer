@@ -154,11 +154,7 @@ fun NotesScreen(context: Context,
         }
 
         Spacer(modifier = Modifier.padding(15.dp))
-//        LazyColumn {
-//            items(notes) { note ->
-//                NoteRow(note = note, onNoteClicked = {})
-//            }
-//        }
+
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
             items(notes) { note ->
                 NoteRow(note = note, onNoteClicked = {})

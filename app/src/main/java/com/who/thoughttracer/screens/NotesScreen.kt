@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +18,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,10 +52,13 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun NotesScreen(context: Context,
-                notes: List<Note>,
-                onAddNote: (Note) -> Unit,
-                onRemoveNote: (Note) -> Unit){
+fun NotesScreen(
+    context: Context,
+    notes: List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit,
+    onEditNote: (Note) -> Unit
+){
 
     Column(modifier = Modifier
         .padding(8.dp)
@@ -154,28 +160,38 @@ fun NotesScreen(context: Context,
         }
 
         Spacer(modifier = Modifier.padding(15.dp))
-
+        var selectedNote by remember { mutableStateOf<Note?>(null) }
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
             items(notes) { note ->
-                NoteRow(note = note, onNoteClicked = {})
+                NoteRow(note = note, onNoteClicked = { selectedNote = note },
+                    onEditClicked = onEditNote, onDeleteClicked = { onRemoveNote(note) })
             }
         }
+        selectedNote?.let { note ->
+            NoteEditDialog(
+                note = note,
+                onEdit = onEditNote,
+                onDelete = onRemoveNote,
+                onClose = { selectedNote = null }
+            )}
     }
 }
 
 @Composable
 fun NoteRow(modifier: Modifier = Modifier,
             note: Note,
-            onNoteClicked: (Note) -> Unit){
+            onNoteClicked: (Note) -> Unit,
+            onEditClicked: (Note) -> Unit,
+            onDeleteClicked: (Note) -> Unit){
     Surface(
         modifier
-            .padding(3.dp)
+            .padding(2.dp)
             .clip(RoundedCornerShape(20.dp))
             .width(200.dp),
         color = Color(0xFFE7E7E7)
     ) {
         Column(modifier = modifier
-            .clickable { }
+            .clickable {onNoteClicked(note)}
             .padding(16.dp),
             horizontalAlignment = Alignment.Start) {
             Text(text = note.title, style = TextStyle(
@@ -188,13 +204,88 @@ fun NoteRow(modifier: Modifier = Modifier,
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
             ))
-            Text(text = note.entryDate.format(DateTimeFormatter.ISO_DATE), style = TextStyle(
+            Text(text = note.entryDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), style = TextStyle(
                 color = Color(0xFF485696),
                 fontWeight = FontWeight.ExtraLight,
                 fontSize = 10.sp,
             ))
+            Spacer(modifier = Modifier.height(16.dp))
+            Row {
+                Button(onClick = { onEditClicked(note) }) {
+                    Text(text = "Edit")
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = { onDeleteClicked(note) }) {
+                    Text(text = "Delete")
+                }
+            }
         }
     }
 }
+
+
+@Composable
+fun NoteEditDialog(
+    note: Note,
+    onEdit: (Note) -> Unit,
+    onDelete: (Note) -> Unit,
+    onClose: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { onClose() },
+        title = { Text(text = "Edit Note") },
+        text = {
+            Column {
+                // Place your text fields here to edit note.title, note.content, etc.
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onEdit(note)
+                    onClose()
+                }
+            ) {
+                Text(text = "Save")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDelete(note)
+                    onClose()
+                }
+            ) {
+                Text(text = "Delete")
+            }
+        }
+    )
+}
+
+@Composable
+fun NoteList(notes: List<Note>) {
+    var selectedNote by remember { mutableStateOf<Note?>(null) }
+
+    LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
+        items(notes) { note ->
+            NoteRow(
+                note = note,
+                onNoteClicked = { selectedNote = note },
+                onEditClicked = { /* Implement edit functionality */ },
+                onDeleteClicked = { /* Implement delete functionality */ }
+            )
+        }
+    }
+
+    selectedNote?.let { note ->
+        NoteEditDialog(
+            note = note,
+            onEdit = { /* Implement edit functionality */ },
+            onDelete = { /* Implement delete functionality */ },
+            onClose = { selectedNote = null }
+        )
+    }
+}
+
 
 

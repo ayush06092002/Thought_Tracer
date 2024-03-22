@@ -1,6 +1,5 @@
 package com.who.thoughttracer.screens
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -26,7 +23,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -38,11 +34,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.who.thoughttracer.R
@@ -54,13 +49,12 @@ import java.time.format.DateTimeFormatter
 @Composable
 
 fun NotesScreen(
-    context: Context,
     notes: List<Note>,
     onAddNote: (Note) -> Unit,
     onRemoveNote: (Note) -> Unit,
     onEditNote: (Note) -> Unit
 ){
-
+    val context = LocalContext.current
     Column(modifier = Modifier
         .padding(8.dp)
         .background(Color(0xFFFFFFFF))) {
@@ -234,11 +228,17 @@ fun NoteEditDialog(
     onClose: () -> Unit
 ) {
     var editContent by remember { mutableStateOf(note.content) }
+    var editTitle by remember { mutableStateOf(note.title) }
     AlertDialog(
         onDismissRequest = { onClose() },
-        title = { Text(text = note.title) },
+        title = {
+            Text(text = "Edit Note")
+        },
         text = {
             Column {
+                TextField(value = editTitle, onValueChange = {
+                    editTitle = it
+                })
                 TextField(value = editContent, onValueChange = {
                     editContent = it
                 })
@@ -248,7 +248,7 @@ fun NoteEditDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    val updatedNote = note.copy(content = editContent)
+                    val updatedNote = note.copy(content = editContent, title = editTitle)
                     onEdit(updatedNote)
                     onClose()
                 }

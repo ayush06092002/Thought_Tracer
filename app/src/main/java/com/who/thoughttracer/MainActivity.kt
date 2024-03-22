@@ -6,13 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
-import com.who.thoughttracer.data.NoteDataSource
-import com.who.thoughttracer.model.Note
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.who.thoughttracer.screens.NoteViewModel
 import com.who.thoughttracer.screens.NotesScreen
 import com.who.thoughttracer.ui.theme.ThoughtTracerTheme
 
@@ -21,41 +19,36 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ThoughtTracerTheme {
-                val notes = remember {
-                    mutableStateListOf<Note>()
-                }
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NotesScreen(context = this@MainActivity,
-                        notes = NoteDataSource().loadNotes(),
-                        onAddNote = {
-                            notes.add(it)
-                        },
-                        onRemoveNote = {
-                            notes.remove(it)
-                        },
-                        onEditNote = { note ->
-                            val index = notes.indexOfFirst { it.id == note.id} //
-                            notes[index] = note
-                        }
-                    )
-
+                    NoteApp()
                 }
             }
         }
     }
 }
 
-
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun NoteApp(noteViewModel: NoteViewModel = viewModel()){
+    val notes = noteViewModel.getNotes().toMutableStateList()
+    NotesScreen(notes = notes,
+        onAddNote = {
+            noteViewModel.addNote(it)
+        },
+        onRemoveNote = {
+            noteViewModel.removeNote(it)
+        },
+        onEditNote = { note ->
+            val index = notes.indexOfFirst { it.id == note.id}
+            notes[index] = note
+        }
     )
+
 }
+
+
+
 

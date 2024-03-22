@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NotesScreen(context = this@MainActivity,
-                        notes = notes,
+                        notes = NoteDataSource().loadNotes(),
                         onAddNote = {
                             notes.add(it)
                         },
@@ -38,7 +38,8 @@ class MainActivity : ComponentActivity() {
                             notes.remove(it)
                         },
                         onEditNote = { note ->
-
+                            val index = notes.indexOfFirst { it.id == note.id} //
+                            notes[index] = note
                         }
                     )
 

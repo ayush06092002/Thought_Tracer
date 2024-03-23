@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -60,6 +62,16 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    //Hilt DI
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Room Database
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+
+
+
 //    implementation(androidx.compose.foundation:foundation-android:1.6.4)
 //    implementation(libs.androidx.material3.android)
     testImplementation(libs.junit)
@@ -69,4 +81,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+kapt {
+    correctErrorTypes = true
 }

@@ -13,7 +13,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.who.thoughttracer.screens.NoteViewModel
 import com.who.thoughttracer.screens.NotesScreen
 import com.who.thoughttracer.ui.theme.ThoughtTracerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

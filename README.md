@@ -2,6 +2,11 @@
 
 Thought Tracer is a simple notes app built with Kotlin for Android, allowing users to add, delete, and edit notes. It's designed to help users track their thoughts and ideas on the go.
 
+![App_UI](https://github.com/ayush06092002/Thought_Tracer/assets/22142132/4e13a345-8138-4923-875b-26a3680d9f05)
+
+![Notes_View](https://github.com/ayush06092002/Thought_Tracer/assets/22142132/cc0de9aa-fd66-4bdc-bb15-4cebb1e6006f)
+
+
 ## Features
 
 1. **Add Note**: Quickly add new notes to capture your thoughts.
@@ -27,14 +32,8 @@ To get started with Thought Tracer, follow these steps:
 2. Open the project in Android Studio.
 3. Build and run the app on an emulator or physical device.
 4. Explore the features and start tracking your thoughts!
+5. Or you can simply install the apk in the repo.
 
-## Contributing
-
-Contributions are welcome! If you have any ideas for improvements, new features, or bug fixes, feel free to open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 

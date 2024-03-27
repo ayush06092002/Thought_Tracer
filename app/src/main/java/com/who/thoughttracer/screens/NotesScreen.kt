@@ -102,13 +102,13 @@ fun NotesScreen(
                 },
                     label = {
                         Text(text = "Title", style = TextStyle(
-                            color = Color(0xFFF24C00),
+                            color = Color(0xFFffa9e7),
                             fontWeight = FontWeight.Bold,
                         ))
                     },
                     modifier = Modifier.padding(8.dp),
                     textStyle = TextStyle(
-                        color = Color(0xFFF24C00)
+                        color = Color(0xFFffa9e7)
                     )
                 )
                 OutlinedTextField(value = contentText, onValueChange = {
@@ -116,13 +116,13 @@ fun NotesScreen(
                 },
                     label = {
                         Text(text = "Note", style = TextStyle(
-                            color = Color(0xFF485696),
+                            color = Color(0xFFffffff),
                             fontWeight = FontWeight.Bold,
                         ))
                     },
                     modifier = Modifier.padding(8.dp),
                     textStyle = TextStyle(
-                        color = Color(0xFF485696)
+                        color = Color(0xFFffffff)
                     )
                 )
                 Button(modifier = Modifier
@@ -163,7 +163,7 @@ fun NotesScreen(
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2)) {
             items(notes) { note ->
                 NoteRow(note = note, onNoteClicked = { selectedNote = note },
-                    onEditClicked = onEditNote, onDeleteClicked = { onRemoveNote(note) })
+                    onEditClicked = { selectedNote = note }, onDeleteClicked = { onRemoveNote(note) })
             }
         }
         selectedNote?.let { note ->

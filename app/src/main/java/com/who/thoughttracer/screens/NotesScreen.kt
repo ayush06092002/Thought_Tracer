@@ -2,6 +2,7 @@ package com.who.thoughttracer.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -57,14 +59,14 @@ fun NotesScreen(
     val context = LocalContext.current
     Column(modifier = Modifier
         .padding(8.dp)
-        .background(Color(0xFFFFFFFF))) {
+        .background(Color(0xFF414361))) {
         TopAppBar(
             title = {
                 Text(modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                     text = stringResource(id = R.string.app_name),
                     style = TextStyle(
-                        color = Color(0xFF000000),
+                        color = Color(0xFF63768d),
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
                     )
@@ -126,6 +128,7 @@ fun NotesScreen(
                 Button(modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(8.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0)),
                     onClick = {
                         if(titleText.isNotEmpty())
                         {
@@ -150,6 +153,7 @@ fun NotesScreen(
         Button(modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0)),
             onClick = { isColumnVisible = !isColumnVisible }) {
             Text(text = if(isColumnVisible) "Cancel" else "Add Note")
         }
@@ -183,22 +187,24 @@ fun NoteRow(modifier: Modifier = Modifier,
             .padding(2.dp)
             .clip(RoundedCornerShape(20.dp))
             .width(200.dp),
-        color = Color(0xFFE7E7E7)
+        color = Color(0xFF2a2d43),
     ) {
         Column(modifier = modifier
             .clickable { onNoteClicked(note) }
             .padding(10.dp),
             horizontalAlignment = Alignment.Start) {
             Text(text = note.title, style = TextStyle(
-                color = Color(0xFFF24C00),
+                color = Color(0xFFffa9e7),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
             ))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(text = note.content, style = TextStyle(
-                color = Color(0xFF485696),
+                color = Color(0xFFFFFFFF),
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
             ))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(text = dateFormat(note.entryDate.time)
             , style = TextStyle(
                 color = Color(0xFF485696),
@@ -207,11 +213,13 @@ fun NoteRow(modifier: Modifier = Modifier,
             ))
             Spacer(modifier = Modifier.height(16.dp))
             Row {
-                Button(onClick = { onEditClicked(note) }) {
+                Button(onClick = { onEditClicked(note) },
+                    colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0))) {
                     Text(text = "Edit")
                 }
                 Spacer(modifier = Modifier.width(6.dp))
-                Button(onClick = { onDeleteClicked(note) }) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0)),onClick = { onDeleteClicked(note) }) {
                     Text(text = "Delete")
                 }
             }
@@ -251,7 +259,8 @@ fun NoteEditDialog(
                     val updatedNote = note.copy(content = editContent, title = editTitle)
                     onEdit(updatedNote)
                     onClose()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0))
             ) {
                 Text(text = "Save")
             }
@@ -261,7 +270,8 @@ fun NoteEditDialog(
                 onClick = {
                     onDelete(note)
                     onClose()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(Color(0xFF8ac6d0))
             ) {
                 Text(text = "Delete")
             }

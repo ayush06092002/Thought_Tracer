@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -63,13 +64,16 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     //Hilt DI
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.v251)
+    kapt(libs.hilt.compiler)
 
     //Room Database
     implementation(libs.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
 
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+//    ksp(libs.androidx.room.compiler.v250)
 
 
 //    implementation(androidx.compose.foundation:foundation-android:1.6.4)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.who.thoughttracer.model.Note
 import com.who.thoughttracer.repository.NoteRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class NoteViewModel @Inject constructor(private val repository: NoteRepository): ViewModel() {
 //    private var noteList = mutableStateListOf<Note>()
 
@@ -32,18 +34,20 @@ class NoteViewModel @Inject constructor(private val repository: NoteRepository):
         }
     }
 
-    suspend fun addNode(note: Note){
+    fun addNote(note: Note){
         viewModelScope.launch {
             repository.addNote(note)
         }
     }
-    suspend fun removeNote(note: Note){
+    fun removeNote(note: Note){
         viewModelScope.launch {
             repository.deleteNote(note)
+
+            _noteList.value = _noteList.value.filter { it.id != note.id }
         }
     }
 
-    suspend fun updateNote(note: Note){
+    fun updateNote(note: Note){
         viewModelScope.launch {
             repository.updateNote(note)
         }

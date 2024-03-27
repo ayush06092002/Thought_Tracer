@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.who.thoughttracer.screens.NoteViewModel
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NoteApp(noteViewModel: NoteViewModel = viewModel()){
-    val notes = noteViewModel.getNotes().toMutableStateList()
+    val notes = noteViewModel.noteList.collectAsState().value
     NotesScreen(notes = notes,
         onAddNote = {
             noteViewModel.addNote(it)
@@ -44,8 +44,9 @@ fun NoteApp(noteViewModel: NoteViewModel = viewModel()){
             noteViewModel.removeNote(it)
         },
         onEditNote = { note ->
-            val index = notes.indexOfFirst { it.id == note.id}
-            notes[index] = note
+//            val index = notes.indexOfFirst { it.id == note.id}
+//            notes[index] = note
+            noteViewModel.updateNote(note)
         }
     )
 

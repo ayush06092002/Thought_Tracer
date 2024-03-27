@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.who.thoughttracer.R
 import com.who.thoughttracer.model.Note
-import java.time.format.DateTimeFormatter
+import com.who.thoughttracer.util.dateFormat
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -199,8 +199,8 @@ fun NoteRow(modifier: Modifier = Modifier,
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
             ))
-            Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"
-            )), style = TextStyle(
+            Text(text = dateFormat(note.entryDate.time)
+            , style = TextStyle(
                 color = Color(0xFF485696),
                 fontWeight = FontWeight.ExtraLight,
                 fontSize = 10.sp,
@@ -242,7 +242,7 @@ fun NoteEditDialog(
                 TextField(value = editContent, onValueChange = {
                     editContent = it
                 })
-                Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")))
+                Text(text = dateFormat(note.entryDate.time))
             }
         },
         confirmButton = {

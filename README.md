@@ -30,7 +30,7 @@ To get started with Thought Tracer, follow these steps:
 2. Open the project in Android Studio.
 3. Build and run the app on an emulator or physical device.
 4. Explore the features and start tracking your thoughts!
-5. Or you can simply install the apk in the repo.
+5. Or you can simply install the <a href = "Thought Tracer.apk">apk</a> in the repo.
 
 
 ## Acknowledgements
